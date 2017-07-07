@@ -6,8 +6,8 @@
   <?php
    session_start();
    $link = mysqli_connect("127.0.0.1", "root", "", "maps");
-   echo "<div class = 'page_header'><div class = 'jumbotron' ><h1>Travel Diaries</h1>Welcome to your account  "
-   .$_SESSION["username"]." </div></div>";
+  // echo "<div class = 'page_header'><div class = 'jumbotron' ><h1>Travel Diaries</h1>Welcome to your account  "
+   //.$_SESSION["username"]." </div></div>";
    if(empty($_SESSION["username"])){
     header("Location: login.php");
    }
@@ -34,36 +34,18 @@
          $lat = $_SESSION["lat"];
          $lng = $_SESSION["lng"];
 
-        /* $allowed =  array('gif','png' ,'jpg');
-         $filename = $_FILES['image']['tmp_name'];
-         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-            if(!in_array($ext,$allowed) ) {
-                 echo 'error';
-              }
-              else{
-           
-              }
-
-              $image = file_get_contents($filename);
-*/
-
-           
-          // $username = $_SESSION["username"];  
-           //$time = strtotime("now");
-
+      
          
-
-           //$username = "admin";
            $username  = $_SESSION["username"];
            date_default_timezone_set("Asia/Kolkata");
            $createdate= date('Y-m-d H:i:s');
            $votes = 0;
          $query = "INSERT INTO entry (username, entry, title, lat, lng,status,time,votes) VALUES 
          (?,?,?,'$lat','$lng',?,'$createdate',?)";
-         mysqli_prepare($link,$query);
-         mysqli_stmt_bind_param($query,"sssii",$username,$entry,$title,$status,$votes);
+         $create_entry =  mysqli_prepare($link,$query);
+         mysqli_stmt_bind_param($create_entry,"sssii",$username,$entry,$title,$status,$votes);
 
-         $sql = mysqli_stmt_execute($query);
+         $sql = mysqli_stmt_execute($create_entry);
        
         if($sql){
           echo "Sucessfully updated";
@@ -200,13 +182,13 @@
          //THERE IS A CHANGE HERE BETWEEN GET AND POST
          var request = new XMLHttpRequest();
          document.getElementById("content").innerHTML = " work now ";
-         request.open('POST', 'result.json', true);
+         request.open('GET', 'result.json', true);
          request.onload = function () {
        // begin accessing JSON data here
          var data = JSON.parse(this.responseText);
          console.log(data.length);
          var content = document.getElementById("content");
-     //var ti="title"
+  
          for(var k = 0; k<data.length;k++){
             if(data[k]["status"]==1){
               if(data[k]["username"]==nameuser){
@@ -215,10 +197,8 @@
                   data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "
                   +data[k]["lng"] +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments  </a>"+
                    " Votes: "+data[k]["votes"]+"  "+
-                  "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+btoa(data[k]["image"])+"'>Upvote</a></p></p>";
-                  if(data[k]["image"]!=null){
-                     content.innerHTML += btoa(data[k]["image"]);
-                  }
+                  "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
+            
    
               }
               else{
@@ -232,10 +212,8 @@
             data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "
             +data[k]["lng"] +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments  </a>"+
              " Votes: "+data[k]["votes"]+"  "+
-            "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+btoa(data[k]["image"])+"'>Upvote</a></p></p>";
-            if(data[k]["image"]!=null){
-               content.innerHTML += btoa(data[k]["image"]);
-            }
+            "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
+        
              }
    
           }
@@ -260,7 +238,8 @@
 
     function autoComplete(){
 
-             
+
+        console.log("works");       
          var name = document.getElementById("search_name").value    
          var xmlhttps = new XMLHttpRequest();
          xmlhttps.open("POST", "search.php", true);
@@ -281,13 +260,14 @@
          
             $.getJSON("search.json", function(json) {
                //$("#browsers").html(" ");
+               console.log(json);
               for(var k =0;k<json.length;k++){
                 if(k==0){
                    document.getElementById("browsers").innerHTML = " ";
                 }
                 var option = document.createElement("option");
                  option.value = json[k]["username"];
-                 //console.log(json[k]["username"]);
+                 console.log(json[k]["username"]);
                 document.getElementById("browsers").appendChild(option);
               
               }
@@ -296,7 +276,7 @@
   
 
 
-     function saveMarker(x,y,i){
+     function saveMarker(x,y){
        if(latArray!=null&&lngArray!=null){
          latArray.push(x);
          lngArray.push(y);
@@ -309,13 +289,7 @@
          markerInfo(x,y);
         // latArray.push(x);
          //lngArray.push(y);
-         $("#entry").show();
-        // $("#content").innerHTML = " ";
-         localStorage.setItem("lat",JSON.stringify(latArray));
-         localStorage.setItem("lng",JSON.stringify(lngArray));
-         console.log(latArray);
-         i++;
-         localStorage.setItem("index",i);
+        
 
      }
 
@@ -330,11 +304,11 @@
     function myMap() {
   
       
-       var myCenter = new google.maps.LatLng(20.508742,78.120850);//set the centre for the map at first
+       var myCenter = new google.maps.LatLng(61.5240, 105.3188);//set the centre for the map at first
        var mapCanvas = document.getElementById("maps");//to get the area where we will be setting up our map
        var mapProperties = {//to create a object that will store the properties of the map we are about to display
        	   center: myCenter, 
-       	   zoom: 2, 
+       	   zoom: 3, 
        	   mapTypeId: google.maps.MapTypeId.HYBRID
        	};
        var map = new google.maps.Map(mapCanvas, mapProperties);
@@ -346,10 +320,12 @@
              marker.setMap(map);
              if(multiple_entry){
               marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+              multiple_entry = false;
              }
            // marker.setIcon('http://www.traveldiariesapp.com/Content/Images/travel-diaries-logo-home.png');
             marker.addListener("click",function(){
               console.log("hi");
+              searchCall = false;
               markerInfoSend(location.lat,location.lng);
               console.log(location.lat + " this is the lgn ");
               console.log(location.lng);
@@ -358,9 +334,23 @@
             });
               marker.addListener("dblclick",function(){
               console.log("create");
-              marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-               //multiple_entry = true;
-              saveMarker(location.lat,location.lng,i);
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                multiple_entry = true;
+                latArray.push(location.lat);
+                lngArray.push(location.lng);
+                multiple_entry = true;
+                placeMarker(location.lat,location.lng);
+                markerInfo(location.lat,location.lng);
+
+                $("#entry").show();
+
+                localStorage.setItem("lat",JSON.stringify(latArray));
+                localStorage.setItem("lng",JSON.stringify(lngArray));
+                console.log(latArray);
+                i++;
+                localStorage.setItem("index",i);
+                console.log("clicked!!!");
+            
                 
             });
     
@@ -369,25 +359,46 @@
             
        
        google.maps.event.addListener(map, 'click', function(event) {
-         //latVar = "lat" + i;
-         //lngVar = "lng" + i;
-         multiple_entry = false;
+                 multiple_entry = false;
          placeMarker(event.latLng);
          //ANS HERE
          var lat = event.latLng.lat();
          var lng = event.latLng.lng();
-         saveMarker(lat,lng,i);
+
+         if(latArray!=null&&lngArray!=null){
+         latArray.push(lat);
+         lngArray.push(lng);
+         }
+         else{
+          latArray = [];
+          lngArray = [];
+         }
+       
+         markerInfo(lat,lng);
+
+         $("#entry").show();
+        // $("#content").innerHTML = " ";
+         localStorage.setItem("lat",JSON.stringify(latArray));
+         localStorage.setItem("lng",JSON.stringify(lngArray));
+         console.log(latArray);
+         i++;
+         localStorage.setItem("index",i);
          console.log("clicked!!!");
         });
     
       
        
         window.onload = function(){
-        document.getElementById("search_name").addEventListener("keyup",autoComplete);
+       document.getElementById("search_name").addEventListener("keyup",autoComplete);
         document.getElementById("search_button").addEventListener("click",function(){
           searchCall = true;
           markerInfoSend();
         });
+//        document.getElementById("search_name").addEventListener("keyup",function(){
+  //        autoComplete();
+    //      searchCall = true;
+      //    markerInfoSend();
+      //  });
         if(localStorage.getItem("index")!=null){
           latArray = JSON.parse(localStorage.getItem("lat"));
           lngArray = JSON.parse(localStorage.getItem("lng"));
@@ -401,10 +412,10 @@
          
           lngIntro = JSON.parse(localStorage.getItem("lng"));
          
-          if(latIntro!=null){
+        /*  if(latIntro!=null){
            lngIntro = lngIntro.sort();
           latIntro = latIntro.sort();
-          }
+          }*/
         for(var j = 0;j<parseInt(localStorage.getItem("index"));j++){
           if(latIntro[j-1]==latIntro[j]){
              multiple_entry = true;
@@ -429,11 +440,56 @@
 
 </head>
 <body>
- <div id = "maps"></div>
- <div id = "content"></div>
- <form method = "POST"enctype "multipart/form-data">
+ 
+ <form method = "POST">
  	<a href = "entry.php"></a>
- <div id = "entry">
+ 
+       <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Travel Journal</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <!--<li><a href="landing.php">Home</a></li>
+      <li><a href = "#"><p><input type = "text" name = "image_id" placeholder = "Type in the id number of the entry">
+      <input type="submit" name="upload_image" value = "Upload"></p></a></li>
+      <li><a href = "#"> <p><select name = "sort">
+      <option value = "2">Time</option>
+      <option value = "1">Votes</option>
+     </select>
+     <input type = "submit" name = "sort_submit" value = "Sort"></p></a></li>
+   
+    </ul>-->
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href = "logout.php"><?php echo $_SESSION["username"]; ?></a></li>
+      <li><a href="register.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+      
+     
+     
+       
+       <input type = "text" name = "search_name" id = "search_name" list = "browsers" placeholder = "search">
+     <input type = "submit" name = "search_button" id = "search_button" value = "Search">
+      <datalist id = "browsers">
+       </datalist>
+      
+       <p>Sort By<select name = "sort">
+      <option value = "2">Time</option>
+      <option value = "1">Votes</option>
+     </select></p>
+     <input type = "submit" name = "sort_submit" value = "Sort">   
+       <p><input type = "text" name = "image_id">
+      <input type="submit" name="upload_image" value = "upload"></p>
+       <span id = 'logout'><a href='logout.php'>Logout</a></span>
+  
+  
+  <div id = "maps"></div>
+  
+    <div id = "entry">
      <p>Title: <input type = "text" name = "title"></p>
      <span id = "usernameStatus"></span>
      <p>Entry: <textarea name = "entry"></textarea></p>
@@ -444,25 +500,10 @@
 
 
      <input type = "submit" name = "submit" value = "Submit">
-      <!-- <input type = "text" name = "comment_content">
-       <input type = "text" name = "comment_username">-->
+  </div>
+  </form>
+ <div id = "content"></div>
 
- </div>
-
-      
-      <p>Sort By<select name = "sort">
-      <option value = "2">Time</option>
-      <option value = "1">Votes</option>
-     </select></p>
-     <input type = "submit" name = "sort_submit" value = "Sort">
-     <input type = "text" name = "search_name" id = "search_name" list = "browsers" placeholder = "search">
-     <input type = "submit" name = "search_button" id = "search_button" value = "Search">
-       <datalist id = "browsers">
-       </datalist>
-          <p><input type = "text" name = "image_id">
-      <input type="submit" name="upload_image" value = "upload"></p>
-</form>
- <span id = 'logout'><a href='logout.php'>Logout</a></span>
 
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIEXY3Y8DysLQt5Se7ecaikiw6OUlxZJY&callback=myMap"></script>
 </body>
