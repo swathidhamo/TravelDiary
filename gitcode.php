@@ -167,6 +167,7 @@
          if(searchCall){
           parameter = "name="+search_name;
           console.log(search_name);
+          searchCall = false;
          }
          else{
           console.log(xe + "   " + ye);
@@ -235,45 +236,49 @@
       var lngArray = [];
       var latArray = [];
       var multiple_entry = false;
-
+       
     function autoComplete(){
 
-
-        console.log("works");       
-         var name = document.getElementById("search_name").value    
+             
+         var name = document.getElementById("search_name").value;
+         document.getElementById("browsers").innerHTML = " ";
          var xmlhttps = new XMLHttpRequest();
          xmlhttps.open("POST", "search.php", true);
-         var parametere = "username="+name;
+         var parameter = "username="+name;
          xmlhttps.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-         xmlhttps.send(parametere);
+         xmlhttps.send(parameter);
          xmlhttps.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
                  
-              
-
+            
             }
 
 
         }
-        
+        nameuser="admin";
              var string = {};
-         
-            $.getJSON("search.json", function(json) {
-               //$("#browsers").html(" ");
-               console.log(json);
-              for(var k =0;k<json.length;k++){
-                if(k==0){
-                   document.getElementById("browsers").innerHTML = " ";
-                }
-                var option = document.createElement("option");
+
+                var request = new XMLHttpRequest();
+         document.getElementById("content").innerHTML = " work now ";
+         request.open('POST', 'search.json', true);
+         request.onload = function () {
+
+       // begin accessing JSON data here
+         var json = JSON.parse(this.responseText);
+
+            for(var k =0;k<json.length;k++){
+                 var option = document.createElement("option");
                  option.value = json[k]["username"];
                  console.log(json[k]["username"]);
-                document.getElementById("browsers").appendChild(option);
+                 document.getElementById("browsers").appendChild(option);
               
               }
-          });     
+        
+          }
+ 
+       request.send();
+         
      }
-  
 
 
      function saveMarker(x,y){
@@ -389,16 +394,16 @@
       
        
         window.onload = function(){
-       document.getElementById("search_name").addEventListener("keyup",autoComplete);
+       //document.getElementById("search_name").addEventListener("keyup",autoComplete);
         document.getElementById("search_button").addEventListener("click",function(){
           searchCall = true;
           markerInfoSend();
         });
-//        document.getElementById("search_name").addEventListener("keyup",function(){
-  //        autoComplete();
-    //      searchCall = true;
-      //    markerInfoSend();
-      //  });
+        document.getElementById("search_name").addEventListener("keyup",function(){
+           autoComplete();
+           searchCall = true;
+           markerInfoSend();
+        });
         if(localStorage.getItem("index")!=null){
           latArray = JSON.parse(localStorage.getItem("lat"));
           lngArray = JSON.parse(localStorage.getItem("lng"));

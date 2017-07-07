@@ -13,9 +13,7 @@
     if(!empty($_POST["lngSE"])){
       $lngS = $_POST["lngSE"];
     }
-    if(!empty($_POST["name"])){
-      $user_name = $_POST["name"];
-    }
+   
 
     //$search = $_POST["name"];
     
@@ -32,6 +30,11 @@
        AND (lng>$lngbgn AND lng < $lngend) ";
        if(isset($_POST["name"])){
        //      $query = "SELECT id,title, entry,lat,lng,username,status,time,votes FROM entry WHERE username = '".$user_name."' ";
+
+       }
+        if(!empty($_POST["name"])){
+          $user_name = $_POST["name"];
+          $query = "SELECT id,title, entry,lat,lng,username,status,time,votes FROM entry WHERE username = '$user_name' ";
 
        }
 

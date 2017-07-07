@@ -7,7 +7,7 @@
    
     $username= $_POST["username"];
 
-    $query = "SELECT DISTINCT username FROM user_info WHERE username LIKE '$username%' ";
+    $query = "SELECT DISTINCT username FROM user_info WHERE username LIKE '%$username%' ";
     
     $sql = mysqli_query($link,$query);
 
