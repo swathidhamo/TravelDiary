@@ -127,7 +127,7 @@
    body {
     font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
     color: #404040;
-    background: #0ca3d2;
+    background: url("https://www.colourbox.de/preview/7214885-travel-doodles.jpg");
 
    }
    #usernameStatus{
