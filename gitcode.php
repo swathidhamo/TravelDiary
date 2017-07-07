@@ -56,7 +56,7 @@
         echo mysqli_error($link);
        }
      }
-    //$query = "SELECT title, entry FROM entry WHERE lat = '$lat' AND lng = '$lng' ";
+    
     if(isset($_POST["sort_submit"])){
       if($_POST["sort"]==2){
         $_SESSION["sort_option"] = "sort_by_time";
@@ -237,72 +237,7 @@
       var lngArray = [];
       var latArray = [];
       var multiple_entry = false;
-       
-    function autoComplete(){
-
-             
-         var name = document.getElementById("search_name").value;
-         document.getElementById("browsers").innerHTML = " ";
-         var xmlhttps = new XMLHttpRequest();
-         xmlhttps.open("POST", "search.php", true);
-         var parameter = "username="+name;
-         xmlhttps.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-         xmlhttps.send(parameter);
-         xmlhttps.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-                 
-            
-            }
-
-
-        }
-        nameuser="admin";
-             var string = {};
-
-                var request = new XMLHttpRequest();
-         document.getElementById("content").innerHTML = " work now ";
-         request.open('POST', 'search.json', true);
-         request.onload = function () {
-
-       // begin accessing JSON data here
-         var json = JSON.parse(this.responseText);
-
-            for(var k =0;k<json.length;k++){
-                 var option = document.createElement("option");
-                 option.value = json[k]["username"];
-                 console.log(json[k]["username"]);
-                 document.getElementById("browsers").appendChild(option);
-              
-              }
-        
-          }
- 
-       request.send();
          
-     }
-
-
-     function saveMarker(x,y){
-       if(latArray!=null&&lngArray!=null){
-         latArray.push(x);
-         lngArray.push(y);
-       }
-       else{
-        latArray = [];
-        lngArray = [];
-       }
-       
-         markerInfo(x,y);        
-     }
-
-
-
-
-
-
-
-
-  
     function myMap() {
   
       
@@ -413,10 +348,7 @@
            latIntro = JSON.parse(localStorage.getItem("lat"));         
            lngIntro = JSON.parse(localStorage.getItem("lng"));
          
-        /*  if(latIntro!=null){
-           lngIntro = lngIntro.sort();
-          latIntro = latIntro.sort();
-          }*/
+  
         for(var j = 0;j<parseInt(localStorage.getItem("index"));j++){
           if(latIntro[j-1]==latIntro[j]){
              multiple_entry = true;
@@ -424,8 +356,7 @@
           else{
             multiple_entry = false;
           }
-          //latIntro = "lat" + j;
-          //lngIntro = "lng" + j;
+        
          var locationMarker = {
           lat: parseFloat(latIntro[j]),
           lng: parseFloat(lngIntro[j])
@@ -451,18 +382,10 @@
       <a class="navbar-brand" href="#">Travel Journal</a>
     </div>
     <ul class="nav navbar-nav">
-      <!--<li><a href="landing.php">Home</a></li>
-      <li><a href = "#"><p><input type = "text" name = "image_id" placeholder = "Type in the id number of the entry">
-      <input type="submit" name="upload_image" value = "Upload"></p></a></li>
-      <li><a href = "#"> <p><select name = "sort">
-      <option value = "2">Time</option>
-      <option value = "1">Votes</option>
-     </select>
-     <input type = "submit" name = "sort_submit" value = "Sort"></p></a></li>
-   
-    </ul>-->
+    <li><a href = "usernamesearch.php">Search by username</a></li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href = "logout.php"><?php echo $_SESSION["username"]; ?></a></li>
+    <li><a href = "logout.php"><?php echo $_SESSION["username"]; ?></a></li>
       <li><a href="register.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
       <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     </ul>
@@ -473,11 +396,7 @@
      
      
        
-       <input type = "text" name = "search_name" id = "search_name" list = "browsers" placeholder = "search">
-     <input type = "submit" name = "search_button" id = "search_button" value = "Search">
-      <datalist id = "browsers">
-       </datalist>
-      
+             
        <p>Sort By<select name = "sort">
       <option value = "2">Time</option>
       <option value = "1">Votes</option>

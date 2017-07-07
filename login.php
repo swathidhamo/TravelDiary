@@ -56,7 +56,7 @@
         $query = "SELECT * FROM user_info WHERE username = '".$username."' AND password = '".$password_hash."'";
         $sql = mysqli_query($link,$query);       
         $rows = mysqli_num_rows($sql);
-        if($rows==1)&&$response != null&&$response->success){
+        if($rows==1&&$response != null&&$response->success){
              $_SESSION["username"] = $username;
             echo "  Sucessfully logged in";
           //  echo $_SESSION["username"];
@@ -100,7 +100,7 @@
    body {
     font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
     color: #404040;
-    background: url("https://www.colourbox.de/preview/7214885-travel-doodles.jpg");
+    background: #0ca3d2;
 
    }
    
