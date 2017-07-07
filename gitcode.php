@@ -56,7 +56,7 @@
         echo mysqli_error($link);
        }
      }
-          //$query = "SELECT title, entry FROM entry WHERE lat = '$lat' AND lng = '$lng' ";
+    //$query = "SELECT title, entry FROM entry WHERE lat = '$lat' AND lng = '$lng' ";
     if(isset($_POST["sort_submit"])){
       if($_POST["sort"]==2){
         $_SESSION["sort_option"] = "sort_by_time";
@@ -151,7 +151,7 @@
        xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
        xml.onreadystatechange = function() {
         if(xml.readyState == 4 && xml.status == 200) {
-           document.getElementById('usernameStatus').innerHTML=x+"sent data<br />";
+           document.getElementById('usernameStatus').innerHTML="sent data<br />";
          }
       }
         xml.send(parameters);
@@ -195,8 +195,9 @@
               if(data[k]["username"]==nameuser){
                    content.innerHTML += 
                   "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
-                  data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " + data[k]["lat"]+"   "
-                  +data[k]["lng"] +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments  </a>"+
+                  data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>  " 
+                   +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+
+                  data[k]["id"]+"'>Comments  </a>"+
                    " Votes: "+data[k]["votes"]+"  "+
                   "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
             
@@ -210,8 +211,8 @@
            else{
              content.innerHTML += 
             "<p class = 'info'>Entry by :  "+data[k]["username"]+"</p><p class = 'info'>   Title: "+
-            data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "+ data[k]["lat"]+"   "
-            +data[k]["lng"] +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments  </a>"+
+            data[k]["title"]+"  At: "+data[k]["time"]+ "  "+"</p><p id = 'contents'>   "
+             +data[k]["entry"] +"<p class = 'info'><a href = 'comments.php?id_comments="+data[k]["id"]+"'>Comments  </a>"+
              " Votes: "+data[k]["votes"]+"  "+
             "<a name  = 'vote'href='comments.php?id_vote="+data[k]["id"]+"'>Upvote</a></p></p>";
         
@@ -219,7 +220,7 @@
    
           }
     console.log(data[0]["title"]);
-  //  document.getElementById("content").innerHTML += "<p id = 'info'>Entry by :  "+data[0]["username"]+"   "+data[0]["title"]+"</p><p id = 'contents'>   "+data[0]["entry"]+data[0]["lat"]+   "</p>";
+  
   
 }
    
@@ -291,11 +292,7 @@
         lngArray = [];
        }
        
-         markerInfo(x,y);
-        // latArray.push(x);
-         //lngArray.push(y);
-        
-
+         markerInfo(x,y);        
      }
 
 
@@ -394,16 +391,16 @@
       
        
         window.onload = function(){
-       //document.getElementById("search_name").addEventListener("keyup",autoComplete);
+         //document.getElementById("search_name").addEventListener("keyup",autoComplete);
         document.getElementById("search_button").addEventListener("click",function(){
           searchCall = true;
           markerInfoSend();
-        });
+         });
         document.getElementById("search_name").addEventListener("keyup",function(){
            autoComplete();
            searchCall = true;
            markerInfoSend();
-        });
+         });
         if(localStorage.getItem("index")!=null){
           latArray = JSON.parse(localStorage.getItem("lat"));
           lngArray = JSON.parse(localStorage.getItem("lng"));
@@ -412,10 +409,9 @@
           latArray = [];
           lngArray = [];
         }
-          i = localStorage.getItem("index");
-          latIntro = JSON.parse(localStorage.getItem("lat"));
-         
-          lngIntro = JSON.parse(localStorage.getItem("lng"));
+           i = localStorage.getItem("index");
+           latIntro = JSON.parse(localStorage.getItem("lat"));         
+           lngIntro = JSON.parse(localStorage.getItem("lng"));
          
         /*  if(latIntro!=null){
            lngIntro = lngIntro.sort();
@@ -487,7 +483,7 @@
       <option value = "1">Votes</option>
      </select></p>
      <input type = "submit" name = "sort_submit" value = "Sort">   
-       <p><input type = "text" name = "image_id">
+       <p><input type = "text" name = "image_id" placeholder = "id of the image">
       <input type="submit" name="upload_image" value = "upload"></p>
        <span id = 'logout'><a href='logout.php'>Logout</a></span>
   

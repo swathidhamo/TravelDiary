@@ -39,7 +39,7 @@
         $secret = "6Le_iScUAAAAADkT6a-7dPnEBjWKhmMls2tOxJql";
  
       // empty response
-     /*   $response = null;
+          $response = null;
  
       // check secret key
          $reCaptcha = new ReCaptcha($secret);
@@ -49,14 +49,14 @@
           $_SERVER["REMOTE_ADDR"],
           $_POST["g-recaptcha-response"]
         );
-      }*/
+      }
 
 
         $password_hash = hash('md5',$password);
         $query = "SELECT * FROM user_info WHERE username = '".$username."' AND password = '".$password_hash."'";
         $sql = mysqli_query($link,$query);       
         $rows = mysqli_num_rows($sql);
-        if($rows==1){//&&$response != null&&$response->success){
+        if($rows==1)&&$response != null&&$response->success){
              $_SESSION["username"] = $username;
             echo "  Sucessfully logged in";
           //  echo $_SESSION["username"];
