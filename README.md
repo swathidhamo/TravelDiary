@@ -1,4 +1,4 @@
-# Travel Diary
+# TravelDiary
 
 Travel Diary is the one stop application for recording all your travel memories
 
