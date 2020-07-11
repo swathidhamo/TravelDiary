@@ -7,13 +7,13 @@ Travel Diary is the one stop application for recording all your travel memories
 For ascessing the database http://localhost/phpmyadmin for ascessing the homepage where the credentials have to be entered to login in or create a new user http://localhost/forum/connect.php 
 
 #### About the files: 
--http://localhost/forum/connect.php is the login page 
--http://localhost/forum/register.php is the registration page #gitcode.php is the entry page page #comments.php is the comments and voting page for an entry --uploades.php is the page to upload the pictures 
--checkdata.php is the page for the registration username check
--display.php is the page for the ajax request for the entry display
--data.php is the page to create a marker using AJAX, it sends data to result.json
--search.php  is the page for auto completing a username and finding the associated journals using  AJAX, it sends result to search.json
--logout.php is the logout page 
+- http://localhost/forum/connect.php is the login page 
+- http://localhost/forum/register.php is the registration page #gitcode.php is the entry page page #comments.php is the comments and voting page for an entry --uploades.php is the page to upload the pictures 
+- checkdata.php is the page for the registration username check
+- display.php is the page for the ajax request for the entry display
+- data.php is the page to create a marker using AJAX, it sends data to result.json
+- search.php  is the page for auto completing a username and finding the associated journals using  AJAX, it sends result to search.json
+- logout.php is the logout page 
 
 #### Installation steps
 ##### Step 1 - Create the MYSQL database 
